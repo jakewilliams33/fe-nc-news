@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getSingleArticle } from "../api";
+import { useParams, Link } from "react-router-dom";
+import { getSingleArticle, updateVotes } from "../api";
 
 export const SingleArticle = () => {
   const { article_id } = useParams();
@@ -11,6 +11,20 @@ export const SingleArticle = () => {
       setArticle(article);
     });
   }, [article_id]);
+
+  const handleUpvote = () => {
+    updateVotes(article_id, { inc_votes: 1 });
+    const newArticle = { ...article };
+    newArticle.votes += 1;
+    setArticle(newArticle);
+  };
+
+  const handleDownvote = () => {
+    updateVotes(article_id, { inc_votes: -1 });
+    const newArticle = { ...article };
+    newArticle.votes -= 1;
+    setArticle(newArticle);
+  };
 
   return (
     <>
@@ -23,11 +37,19 @@ export const SingleArticle = () => {
       <div className="articleEnd">
         <p>
           tagged:{" "}
-          <a className="topicLinkSingle" href={`/${article.topic}`}>
+          <Link className="topicLinkSingle" to={`/${article.topic}`}>
             {article.topic}
-          </a>
+          </Link>
         </p>
-        <p>votes: {article.votes}</p>
+        <div className="votes">
+          <p>votes: {article.votes}</p>
+          <button onClick={handleUpvote} className="up">
+            upvote
+          </button>
+          <button onClick={handleDownvote} className="down">
+            downvote
+          </button>
+        </div>
       </div>
     </>
   );

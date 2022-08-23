@@ -28,7 +28,7 @@ export const ArticlesPage = () => {
             </a>
             <Link
               className="articleLinks"
-              to={`articles/${article.article_id}`}
+              to={`/articles/${article.article_id}`}
             >
               <h2 key={article.title}>{article.title}</h2>
             </Link>
