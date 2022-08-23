@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getArticles } from "../api";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 export const ArticlesPage = () => {
   const [articles, setArticles] = useState([]);
@@ -26,7 +26,12 @@ export const ArticlesPage = () => {
             >
               {article.topic}
             </a>
-            <h2 key={article.title}>{article.title}</h2>
+            <Link
+              className="articleLinks"
+              to={`articles/${article.article_id}`}
+            >
+              <h2 key={article.title}>{article.title}</h2>
+            </Link>
             <p key={article.author}>{article.author}</p>
             <div className="articleFooter">
               <p key={article.created_at}>
