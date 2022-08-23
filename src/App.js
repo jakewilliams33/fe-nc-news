@@ -2,6 +2,7 @@ import "./App.css";
 import Header from "./Components/Header";
 import TopicMenu from "./Components/TopicMenu";
 import { ArticlesPage } from "./Components/ArticlesPage";
+import { SingleArticle } from "./Components/SingleArticle";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -9,12 +10,12 @@ function App() {
     <>
       <BrowserRouter>
         <TopicMenu />
-
         <Header />
 
         <Routes>
           <Route path="/" element={<ArticlesPage />} />
           <Route path="/:topic" element={<ArticlesPage />} />
+          <Route path="/articles/:article_id" element={<SingleArticle />} />
         </Routes>
       </BrowserRouter>
     </>

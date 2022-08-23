@@ -25,3 +25,11 @@ export const getArticles = (topic) => {
       });
   }
 };
+
+export const getSingleArticle = (article_id) => {
+  return axios
+    .get(`https://jakes-nc-news-app.herokuapp.com/api/articles/${article_id}`)
+    .then(({ data }) => {
+      return data.article;
+    });
+};

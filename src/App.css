@@ -10,6 +10,13 @@
   margin-left: 9.5%;
 }
 
+.articleLinks {
+  text-decoration: none;
+  color: black;
+  margin: 0px;
+  display: block;
+}
+
 .title {
   text-align: center;
   font-weight: 900;
@@ -23,6 +30,17 @@
   margin: 0px;
   display: flex;
   justify-content: space-between;
+}
+
+.articleEnd {
+  margin: 0px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.topicLinkSingle {
+  margin: 0px;
+  color: black;
 }
 
 .topicLink {
