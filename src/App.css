@@ -17,6 +17,10 @@
   display: block;
 }
 
+.votes {
+  display: flex;
+}
+
 .title {
   text-align: center;
   font-weight: 900;
@@ -58,9 +62,9 @@
   background-color: black;
   position: fixed; /* Set the navbar to fixed position */
   top: 0; /* Position the navbar at the top of the page */
-  width: 73%;
+  width: 72.8%;
   border-bottom: 1px solid rgba(255, 255, 255, 0.424);
-  margin-left: 4%;
+  margin-left: 4.1%;
 }
 
 /* Links inside the navbar */

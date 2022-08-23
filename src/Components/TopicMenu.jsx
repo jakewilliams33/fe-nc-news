@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getTopics } from "../api";
+import { Link } from "react-router-dom";
 
 export default function TopicMenu() {
   const [topics, setTopics] = useState([]);
@@ -23,9 +24,9 @@ export default function TopicMenu() {
           </a>
           {topics.map((topic) => {
             return (
-              <a key={topic.slug} href={`/${topic.slug}`}>
+              <Link key={topic.slug} to={`/${topic.slug}`}>
                 {topic.slug}
-              </a>
+              </Link>
             );
           })}
         </div>
