@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getSingleArticle, updateVotes } from "../api";
+import { getCommentsByArticle, getSingleArticle, updateVotes } from "../api";
 
 export const SingleArticle = () => {
   const { article_id } = useParams();
   const [article, setArticle] = useState({});
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     getSingleArticle(article_id).then((article) => {
@@ -25,6 +26,12 @@ export const SingleArticle = () => {
     newArticle.votes -= 1;
     setArticle(newArticle);
   };
+
+  useEffect(() => {
+    getCommentsByArticle(article_id).then((comments) => {
+      setComments(comments);
+    });
+  }, [article_id]);
 
   return (
     <>
@@ -51,6 +58,28 @@ export const SingleArticle = () => {
           </button>
         </div>
       </div>
+      <hr></hr>
+      <h3>Comments</h3>
+      {comments.map((comment) => {
+        return (
+          <div key={comment.comment_id}>
+            <p key={comment.author} className="commentAuthor">
+              {comment.author}
+            </p>
+            <p key={comment.created_at} className="commentDate">
+              {new Date(comment.created_at).toUTCString()}
+            </p>
+            <p key={comment.body} className="commentBody">
+              {comment.body}
+            </p>
+            <hr></hr>
+          </div>
+        );
+      })}
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
     </>
   );
 };

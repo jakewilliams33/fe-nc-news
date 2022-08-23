@@ -44,3 +44,13 @@ export const updateVotes = (article_id, voteUpdate) => {
       return data.article;
     });
 };
+
+export const getCommentsByArticle = (article_id) => {
+  return axios
+    .get(
+      `https://jakes-nc-news-app.herokuapp.com/api/articles/${article_id}/comments`
+    )
+    .then(({ data }) => {
+      return data.comments;
+    });
+};
