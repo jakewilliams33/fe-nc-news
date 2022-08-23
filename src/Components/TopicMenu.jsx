@@ -11,15 +11,22 @@ export default function TopicMenu() {
   }, [setTopics]);
 
   return (
-    <div class="navbar">
-      <div class="dropdown">
-        <button class="dropbtn">
+    <div className="navbar">
+      <div className="dropdown">
+        <button className="dropbtn">
           Topics
-          <i class="fa fa-caret-down"></i>
+          <i className="fa fa-caret-down"></i>
         </button>
-        <div class="dropdown-content">
+        <div className="dropdown-content">
+          <a key="all" href="/">
+            all
+          </a>
           {topics.map((topic) => {
-            return <a>{topic.slug}</a>;
+            return (
+              <a key={topic.slug} href={`/${topic.slug}`}>
+                {topic.slug}
+              </a>
+            );
           })}
         </div>
       </div>
