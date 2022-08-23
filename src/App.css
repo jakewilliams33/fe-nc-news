@@ -134,3 +134,15 @@
   display: block;
   margin-left: 0px;
 }
+
+.commentAuthor {
+  font-size: 17px;
+}
+
+.commentDate {
+  font-size: 13px;
+}
+
+.commentBody {
+  font-size: 15px;
+}
