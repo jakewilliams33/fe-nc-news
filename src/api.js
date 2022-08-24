@@ -54,3 +54,10 @@ export const getCommentsByArticle = (article_id) => {
       return data.comments;
     });
 };
+
+export const postComment = (article_id, newComment) => {
+  axios.post(
+    `https://jakes-nc-news-app.herokuapp.com/api/articles/${article_id}/comments`,
+    newComment
+  );
+};

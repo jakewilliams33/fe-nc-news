@@ -146,3 +146,17 @@
 .commentBody {
   font-size: 15px;
 }
+
+.commentsHeader {
+  margin-right: 0;
+}
+
+.commentsCount {
+  display: flex;
+  justify-content: baseline;
+}
+
+.num {
+  margin-left: 6px;
+  padding-top: 6px;
+}

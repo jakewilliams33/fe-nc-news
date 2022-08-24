@@ -1,11 +1,20 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getCommentsByArticle, getSingleArticle, updateVotes } from "../api";
+import {
+  getCommentsByArticle,
+  getSingleArticle,
+  postComment,
+  updateVotes,
+} from "../api";
 
 export const SingleArticle = () => {
   const { article_id } = useParams();
   const [article, setArticle] = useState({});
   const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState({
+    username: "Buzz-Lightyear43",
+    body: "",
+  });
 
   useEffect(() => {
     getSingleArticle(article_id).then((article) => {
@@ -33,6 +42,18 @@ export const SingleArticle = () => {
     });
   }, [article_id]);
 
+  const handleChange = (event) => {
+    const newCommentCopy = { ...newComment };
+    newCommentCopy.body = event.target.value;
+    setNewComment(newCommentCopy);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    postComment(article_id, newComment);
+    console.log(newComment);
+  };
+
   return (
     <>
       <h1>{article.title}</h1>
@@ -59,16 +80,31 @@ export const SingleArticle = () => {
         </div>
       </div>
       <hr></hr>
-      <h3>Comments</h3>
+      <div className="commentsCount">
+        <h3 className="commentsHeader">Comments</h3>
+        <p className="num">{article.comment_count}</p>
+      </div>
+
+      <form onSubmit={handleSubmit}>
+        <input
+          onChange={(event) => {
+            handleChange(event);
+          }}
+          type="text"
+          placeholder="Add a comment..."
+        ></input>
+        <input type="submit"></input>
+      </form>
+
       {comments.map((comment) => {
         return (
           <div key={comment.comment_id}>
             <p key={comment.author} className="commentAuthor">
               {comment.author}
             </p>
-            <p key={comment.created_at} className="commentDate">
+            {/* <p key={comment.created_at} className="commentDate">
               {new Date(comment.created_at).toUTCString()}
-            </p>
+            </p> */}
             <p key={comment.body} className="commentBody">
               {comment.body}
             </p>
