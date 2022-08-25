@@ -51,6 +51,7 @@ export const getCommentsByArticle = (article_id) => {
 };
 
 export const postComment = (article_id, newComment) => {
+  console.log(article_id);
   axios.post(
     `https://jakes-nc-news-app.herokuapp.com/api/articles/${article_id}/comments`,
     newComment

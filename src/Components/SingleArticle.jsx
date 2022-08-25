@@ -12,7 +12,7 @@ export const SingleArticle = () => {
   const [article, setArticle] = useState({});
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState({
-    username: "Buzz-Lightyear43",
+    username: "jessjelly",
     body: "",
   });
 
@@ -51,7 +51,16 @@ export const SingleArticle = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     postComment(article_id, newComment);
-    console.log(newComment);
+    const commentsCopy = [
+      {
+        author: "jessjelly",
+        body: newComment.body,
+        posted: "now",
+        tempKey: Date.now().toString(),
+      },
+      ...comments,
+    ];
+    setComments(commentsCopy);
   };
 
   return (
@@ -97,14 +106,17 @@ export const SingleArticle = () => {
       </form>
 
       {comments.map((comment) => {
+        const date = comment.created_at
+          ? new Date(comment.created_at).toUTCString()
+          : "now";
         return (
-          <div key={comment.comment_id}>
+          <div key={comment.comment_id ? comment.comment_id : comment.tempKey}>
             <p key={comment.author} className="commentAuthor">
               {comment.author}
             </p>
-            {/* <p key={comment.created_at} className="commentDate">
-              {new Date(comment.created_at).toUTCString()}
-            </p> */}
+            <p key={comment.created_at} className="commentDate">
+              {date}
+            </p>
             <p key={comment.body} className="commentBody">
               {comment.body}
             </p>

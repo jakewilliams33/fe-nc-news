@@ -32,9 +32,8 @@ export const ArticlesPage = () => {
     { url: "sort/1", value: "created_at&order=desc", label: "newest" },
     { url: "sort/2", value: "created_at&order=asc", label: "oldest" },
     { url: "sort/3", value: "title&order=asc", label: "title" },
-    { url: "sort/4", value: "topic&order=asc", label: "topic" },
-    { url: "sort/5", value: "votes", label: "votes" },
-    { url: "sort/6", value: "comment_count", label: "comments" },
+    { url: "sort/4", value: "votes", label: "votes" },
+    { url: "sort/5", value: "comment_count", label: "comments" },
   ];
 
   return (
