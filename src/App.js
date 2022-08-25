@@ -11,10 +11,13 @@ function App() {
       <BrowserRouter>
         <TopicMenu />
         <Header />
-
         <Routes>
           <Route path="/" element={<ArticlesPage />} />
+
           <Route path="/:topic" element={<ArticlesPage />} />
+          <Route path="/:topic/sort/*" element={<ArticlesPage />} />
+          <Route path="/sort/*" element={<ArticlesPage />} />
+
           <Route path="/articles/:article_id" element={<SingleArticle />} />
         </Routes>
       </BrowserRouter>
