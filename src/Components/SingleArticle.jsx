@@ -101,6 +101,7 @@ export const SingleArticle = () => {
           }}
           type="text"
           placeholder="Add a comment..."
+          required
         ></input>
         <input type="submit"></input>
       </form>
