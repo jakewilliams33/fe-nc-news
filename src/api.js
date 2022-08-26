@@ -56,3 +56,9 @@ export const postComment = (article_id, newComment) => {
     newComment
   );
 };
+
+export const deleteThisComment = (comment_id) => {
+  axios.delete(
+    `https://jakes-nc-news-app.herokuapp.com/api/comments/${comment_id}`
+  );
+};
