@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
 import {
   getCommentsByArticle,
   getSingleArticle,
   postComment,
   updateVotes,
+  deleteThisComment,
 } from "../api";
 
+//main function
 export const SingleArticle = () => {
   const { article_id } = useParams();
+  const [val, setVal] = useState("");
   const [article, setArticle] = useState({});
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState({
@@ -16,12 +21,17 @@ export const SingleArticle = () => {
     body: "",
   });
 
+  TimeAgo.addLocale(en);
+  const timeAgo = new TimeAgo("en-US");
+
+  //get article info
   useEffect(() => {
     getSingleArticle(article_id).then((article) => {
       setArticle(article);
     });
   }, [article_id]);
 
+  //votes
   const handleUpvote = () => {
     updateVotes(article_id, { inc_votes: 1 });
     const newArticle = { ...article };
@@ -36,31 +46,61 @@ export const SingleArticle = () => {
     setArticle(newArticle);
   };
 
+  //get Comments array
   useEffect(() => {
     getCommentsByArticle(article_id).then((comments) => {
+      comments.sort((a, b) => {
+        return (
+          new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+        );
+      });
       setComments(comments);
     });
   }, [article_id]);
 
+  // set state to current string in comment field
   const handleChange = (event) => {
     const newCommentCopy = { ...newComment };
     newCommentCopy.body = event.target.value;
     setNewComment(newCommentCopy);
+    setVal(event.target.value);
   };
 
+  //submit comment
   const handleSubmit = (event) => {
     event.preventDefault();
     postComment(article_id, newComment);
+
     const commentsCopy = [
       {
         author: "jessjelly",
         body: newComment.body,
-        posted: "now",
+        posted: timeAgo.format(new Date()),
         tempKey: Date.now().toString(),
       },
       ...comments,
     ];
     setComments(commentsCopy);
+    setVal("");
+  };
+
+  //delete comment
+  const handleDelete = (event) => {
+    deleteThisComment(event.target.value);
+    console.log(event.target.value);
+    const commentsTemp = [...comments];
+
+    for (let i = 0; i < commentsTemp.length; i++) {
+      if (
+        comments[i].comment_id &&
+        comments[i].comment_id.toString() === event.target.value
+      ) {
+        comments[i].body = "comment deleted";
+        comments[i].created_at = new Date();
+        comments[i].author = "";
+      }
+    }
+    setComments([...commentsTemp]);
   };
 
   return (
@@ -96,6 +136,7 @@ export const SingleArticle = () => {
 
       <form onSubmit={handleSubmit}>
         <input
+          value={val}
           onChange={(event) => {
             handleChange(event);
           }}
@@ -108,13 +149,23 @@ export const SingleArticle = () => {
 
       {comments.map((comment) => {
         const date = comment.created_at
-          ? new Date(comment.created_at).toUTCString()
-          : "now";
+          ? timeAgo.format(new Date(comment.created_at))
+          : comment.posted;
         return (
           <div key={comment.comment_id ? comment.comment_id : comment.tempKey}>
             <p key={comment.author} className="commentAuthor">
               {comment.author}
             </p>
+            {comment.comment_id && comment.author === "jessjelly" && (
+              <button
+                onClick={handleDelete}
+                value={
+                  comment.comment_id ? comment.comment_id : comment.tempKey
+                }
+              >
+                Delete
+              </button>
+            )}
             <p key={comment.created_at} className="commentDate">
               {date}
             </p>

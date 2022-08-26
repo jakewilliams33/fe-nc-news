@@ -61,7 +61,7 @@ export const ArticlesPage = () => {
               <p key={article.created_at}>
                 {new Date(article.created_at).toUTCString()}
               </p>
-              <p>upvotes: {article.votes}</p>
+              <p>votes: {article.votes}</p>
             </div>
             <hr></hr>
           </div>
