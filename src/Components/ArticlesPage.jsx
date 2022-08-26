@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { getArticles } from "../api";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Select from "react-select";
+import ErrorPage from "./ErrorPage";
 
 export const ArticlesPage = () => {
   const [articles, setArticles] = useState([]);
   const [queryStr, setQueryStr] = useState();
   const { topic } = useParams();
+  const [error, setError] = useState(null);
 
   let placeholder = "";
 
@@ -22,10 +24,14 @@ export const ArticlesPage = () => {
   };
 
   useEffect(() => {
-    getArticles(topic, queryStr).then((articleList) => {
-      console.log(queryStr);
-      setArticles(articleList.articles);
-    });
+    getArticles(topic, queryStr)
+      .then((articleList) => {
+        console.log(queryStr);
+        setArticles(articleList.articles);
+      })
+      .catch((err) => {
+        setError({ err });
+      });
   }, [topic, queryStr]);
 
   const options = [
@@ -35,6 +41,10 @@ export const ArticlesPage = () => {
     { url: "sort/4", value: "votes", label: "votes" },
     { url: "sort/5", value: "comment_count", label: "comments" },
   ];
+
+  if (error) {
+    return <ErrorPage message={error} />;
+  }
 
   return (
     <section>
@@ -46,13 +56,13 @@ export const ArticlesPage = () => {
             <a
               className="topicLink"
               key={article.body}
-              href={`/${article.topic}`}
+              href={`/articles/${article.topic}`}
             >
               {article.topic}
             </a>
             <Link
               className="articleLinks"
-              to={`/articles/${article.article_id}`}
+              to={`/article/${article.article_id}`}
             >
               <h2 key={article.title}>{article.title}</h2>
             </Link>

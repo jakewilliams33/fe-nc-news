@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import { userContext } from "../contexts/userContext";
+import ErrorPage from "./ErrorPage";
 
 import {
   getCommentsByArticle,
@@ -14,24 +15,29 @@ import {
 
 //main function
 export const SingleArticle = () => {
+  const { user } = useContext(userContext);
   const { article_id } = useParams();
   const [val, setVal] = useState("");
   const [article, setArticle] = useState({});
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState({
-    username: "jessjelly",
+    username: user,
     body: "",
   });
-  const { user } = useContext(userContext);
+  const [error, setError] = useState(null);
 
   TimeAgo.addLocale(en);
   const timeAgo = new TimeAgo("en-US");
 
   //get article info
   useEffect(() => {
-    getSingleArticle(article_id).then((article) => {
-      setArticle(article);
-    });
+    getSingleArticle(article_id)
+      .then((article) => {
+        setArticle(article);
+      })
+      .catch((err) => {
+        setError({ err });
+      });
   }, [article_id]);
 
   //votes
@@ -51,14 +57,18 @@ export const SingleArticle = () => {
 
   //get Comments array
   useEffect(() => {
-    getCommentsByArticle(article_id).then((comments) => {
-      comments.sort((a, b) => {
-        return (
-          new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-        );
+    getCommentsByArticle(article_id)
+      .then((comments) => {
+        comments.sort((a, b) => {
+          return (
+            new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+          );
+        });
+        setComments(comments);
+      })
+      .catch((err) => {
+        setError({ err });
       });
-      setComments(comments);
-    });
   }, [article_id]);
 
   // set state to current string in comment field
@@ -85,6 +95,9 @@ export const SingleArticle = () => {
     ];
     setComments(commentsCopy);
     setVal("");
+    const newArticle = { ...article };
+    newArticle.comment_count += 1;
+    setArticle(newArticle);
   };
 
   //delete comment
@@ -104,7 +117,14 @@ export const SingleArticle = () => {
       }
     }
     setComments([...commentsTemp]);
+    const newArticle = { ...article };
+    newArticle.comment_count -= 1;
+    setArticle(newArticle);
   };
+
+  if (error) {
+    return <ErrorPage message={error} />;
+  }
 
   return (
     <>
@@ -117,7 +137,7 @@ export const SingleArticle = () => {
       <div className="articleEnd">
         <p>
           tagged:{" "}
-          <Link className="topicLinkSingle" to={`/${article.topic}`}>
+          <Link className="topicLinkSingle" to={`/articles/${article.topic}`}>
             {article.topic}
           </Link>
         </p>
