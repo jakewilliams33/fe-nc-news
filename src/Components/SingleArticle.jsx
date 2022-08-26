@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
+import { userContext } from "../contexts/userContext";
+
 import {
   getCommentsByArticle,
   getSingleArticle,
@@ -20,6 +22,7 @@ export const SingleArticle = () => {
     username: "jessjelly",
     body: "",
   });
+  const { user } = useContext(userContext);
 
   TimeAgo.addLocale(en);
   const timeAgo = new TimeAgo("en-US");
@@ -73,7 +76,7 @@ export const SingleArticle = () => {
 
     const commentsCopy = [
       {
-        author: "jessjelly",
+        author: user,
         body: newComment.body,
         posted: timeAgo.format(new Date()),
         tempKey: Date.now().toString(),
@@ -156,7 +159,7 @@ export const SingleArticle = () => {
             <p key={comment.author} className="commentAuthor">
               {comment.author}
             </p>
-            {comment.comment_id && comment.author === "jessjelly" && (
+            {comment.comment_id && comment.author === user && (
               <button
                 onClick={handleDelete}
                 value={
