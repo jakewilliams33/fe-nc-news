@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getTopics = () => {
   return axios
-    .get("https://jakes-nc-news.onrender.com//api/topics")
+    .get("https://jakes-nc-news.onrender.com/api/topics")
     .then(({ data }) => {
       return data;
     });
@@ -14,7 +14,7 @@ export const getArticles = (topic, queryStr) => {
   const andOr = topic ? "&" : "?";
   return axios
     .get(
-      `https://jakes-nc-news.onrender.com//api/articles${topicOption}${andOr}${queryOption}`
+      `https://jakes-nc-news.onrender.com/api/articles${topicOption}${andOr}${queryOption}`
     )
     .then(({ data }) => {
       return data;
@@ -23,7 +23,7 @@ export const getArticles = (topic, queryStr) => {
 
 export const getSingleArticle = (article_id) => {
   return axios
-    .get(`https://jakes-nc-news.onrender.com//api/articles/${article_id}`)
+    .get(`https://jakes-nc-news.onrender.com/api/articles/${article_id}`)
     .then(({ data }) => {
       return data.article;
     });
@@ -32,7 +32,7 @@ export const getSingleArticle = (article_id) => {
 export const updateVotes = (article_id, voteUpdate) => {
   axios
     .patch(
-      `https://jakes-nc-news.onrender.com//api/articles/${article_id}`,
+      `https://jakes-nc-news.onrender.com/api/articles/${article_id}`,
       voteUpdate
     )
     .then(({ data }) => {
@@ -43,7 +43,7 @@ export const updateVotes = (article_id, voteUpdate) => {
 export const getCommentsByArticle = (article_id) => {
   return axios
     .get(
-      `https://jakes-nc-news.onrender.com//api/articles/${article_id}/comments`
+      `https://jakes-nc-news.onrender.com/api/articles/${article_id}/comments`
     )
     .then(({ data }) => {
       return data.comments;
@@ -52,13 +52,11 @@ export const getCommentsByArticle = (article_id) => {
 
 export const postComment = (article_id, newComment) => {
   axios.post(
-    `https://jakes-nc-news.onrender.com//api/articles/${article_id}/comments`,
+    `https://jakes-nc-news.onrender.com/api/articles/${article_id}/comments`,
     newComment
   );
 };
 
 export const deleteThisComment = (comment_id) => {
-  axios.delete(
-    `https://jakes-nc-news.onrender.com//api/comments/${comment_id}`
-  );
+  axios.delete(`https://jakes-nc-news.onrender.com/api/comments/${comment_id}`);
 };
